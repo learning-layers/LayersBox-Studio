@@ -1,0 +1,38 @@
+[
+  {
+    "cmd": "\"/opt/init.sh run\"", 
+    "component": "learninglayers/openidconnect:0.0.15", 
+    "created": "6 minutes ago", 
+    "id": "8fdafcb9314f", 
+    "name": "oidc", 
+    "ports": "8080/tcp", 
+    "status": "Up 6 minutes"
+  }, 
+  {
+    "cmd": "\"bash /usr/bin/start-\"", 
+    "component": "learninglayers/openldap:0.0.10", 
+    "created": "7 minutes ago", 
+    "id": "ccb2099ddb88", 
+    "name": "openldap", 
+    "ports": "0.0.0.0:389->389/tcp", 
+    "status": "Up 7 minutes"
+  }, 
+  {
+    "cmd": "\"/bin/sh -c '/usr/loc\"", 
+    "component": "learninglayers/adapter:0.0.1", 
+    "created": "7 minutes ago", 
+    "id": "d1b5b17563eb", 
+    "name": "adapter", 
+    "ports": "0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp", 
+    "status": "Up 7 minutes"
+  }, 
+  {
+    "cmd": "\"/entrypoint.sh mysql\"", 
+    "component": "learninglayers/mysql:0.0.1", 
+    "created": "7 minutes ago", 
+    "id": "c52d43f04098", 
+    "name": "mysql", 
+    "ports": "0.0.0.0:3306->3306/tcp", 
+    "status": "Up 7 minutes"
+  }
+]

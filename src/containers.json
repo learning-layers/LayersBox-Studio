@@ -1,0 +1,51 @@
+[
+  {
+    "cmd": "/bin/sh -c /usr/local/open ...", 
+    "component": "adapter", 
+    "ports": "0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp", 
+    "status": "Up"
+  }, 
+  {
+    "cmd": "/bin/sh -c SERVER_NAME=`ec ...", 
+    "component": "adapter-data", 
+    "status": "Exit 0"
+  }, 
+  {
+    "cmd": "/entrypoint.sh mysqld", 
+    "component": "mysql", 
+    "ports": "0.0.0.0:3306->3306/tcp", 
+    "status": "Up"
+  }, 
+  {
+    "cmd": "/create-database-user.sh", 
+    "component": "mysql-create", 
+    "status": "Exit 0"
+  }, 
+  {
+    "cmd": "/backup-scripts/restore.sh", 
+    "component": "mysql-data", 
+    "status": "Exit 0"
+  }, 
+  {
+    "cmd": "/opt/init.sh run", 
+    "component": "oidc", 
+    "ports": "8080/tcp", 
+    "status": "Up"
+  }, 
+  {
+    "cmd": "/bin/sh -c sed -i \"s#OIDC_ ...", 
+    "component": "oidc-data", 
+    "status": "Exit 0"
+  }, 
+  {
+    "cmd": "bash /usr/bin/start-openld ...", 
+    "component": "openldap", 
+    "ports": "0.0.0.0:389->389/tcp", 
+    "status": "Up"
+  }, 
+  {
+    "cmd": "/backup-scripts/restore.sh", 
+    "component": "openldap-data", 
+    "status": "Exit 0"
+  }
+]

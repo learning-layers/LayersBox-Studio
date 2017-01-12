@@ -1,0 +1,114 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="view-lapps">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        padding: 10px;
+      }
+
+      .card {
+        width: 700px;
+      }
+
+      .components {
+        @apply(--layout-vertical);
+        @apply(--layout-wrap);
+        height: 344px;
+        width: 384px;
+      }
+
+      paper-card {
+        box-sizing: border-box;
+        max-width: 300px;
+        margin: 10px;
+        flex: 0 0 auto;
+        --paper-card: {
+          color: black;
+        }
+      }
+
+      .card-actions > a {
+        color: inherit;
+        text-decoration: none;
+      }
+    </style>
+
+    <div class="card">
+      <h1>Component Store</h1>
+      <p>Here you see all the components that you can install within your Layers Box.</p>
+
+      <paper-card heading="OpenID Connect" image="http://placehold.it/300x150/FFC107/000000?text=OpenID%20Connect" alt="OpenID Connect">
+        <div class="card-content">
+          OpenID Connect allows you to authenticate and authorize users.
+        </div>
+        <div class="card-actions">
+          <a href="https://github.com/learning-layers/openidconnect-Dockerfiles" target="_blank" tabindex="-1">
+            <paper-button>Visit Homepage</paper-button>
+          </a>
+          <paper-button on-tap="_handleInstall">Install</paper-button>
+        </div>
+      </paper-card>
+
+      <paper-card heading="Social Semantic Server" image="http://placehold.it/300x150/66ff66/000000?text=Social%20Semantic%20Server" alt="Social Semantic Server">
+        <div class="card-content">
+          Towards A Framework for Social Semantic Network Data.
+        </div>
+        <div class="card-actions">
+          <a href="https://github.com/learning-layers/SocialSemanticServer" target="_blank" tabindex="-1">
+            <paper-button>Visit Homepage</paper-button>
+          </a>
+          <paper-button on-tap="_handleInstall">Install</paper-button>
+        </div>
+      </paper-card>
+
+      <paper-card heading="MobSOS" image="http://placehold.it/300x150/66ccff/000000?text=MobSOS" alt="MobSOS">
+        <div class="card-content">
+          MobSOS is a one-stop shop for all your analytics needs.
+        </div>
+        <div class="card-actions">
+          <a href="https://github.com/rwth-acis/mobsos" target="_blank" tabindex="-1">
+            <paper-button>Visit Homepage</paper-button>
+          </a>
+          <paper-button on-tap="_handleInstall">Install</paper-button>
+        </div>
+      </paper-card>
+
+    </div>
+
+    <paper-dialog id="installDialog">
+      <h2>Install Component</h2>
+      <p>Do you really want to install this component?</p>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus>Install</paper-button>
+      </div>
+    </paper-dialog>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'view-lapps',
+
+      _handleInstall: function() {
+        this.$.installDialog.open();
+      }
+    });
+  </script>
+</dom-module>
