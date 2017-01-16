@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .card {
-        width: 700px;
+        width: 800px;
       }
 
       .components {
@@ -63,7 +63,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                handle-as="json"
                content-type="application/json"
                method="POST"
-               last-response="{{installResponse}}"></iron-ajax>
+               last-response="{{installResponse}}"
+               on-response="handleInstallResponse"></iron-ajax>
 
     <div class="card">
       <h1>Component Store</h1>
@@ -95,7 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <paper-dialog id="installDialog" on-iron-overlay-closed="_handleInstallDialogClosed">
       <h2>Install Component</h2>
-      <p>Do you really want to install this component?</p>
+      <p>Do you really want to install [[_installComponent.name]]?</p>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
         <paper-button dialog-confirm autofocus>Install</paper-button>
@@ -112,8 +113,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           value: function() { return this._getComponents(); }
         },
-        _installPackageId: {
-          type: String
+        _installComponent: {
+          type: Object
         },
         _log: {
           type: Array,
@@ -147,12 +148,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _handleInstallDialogClosed: function(e) {
         if (e.detail.confirmed) {
           var request = this.$.installRequest;
-          request.body = this._installComponent.packageId;
+          request.body = 'component=' + this._installComponent.packageId;
 
           request.generateRequest();
           this.$.logPanel.show();
           this.push('_log', 'Installing ' + this._installComponent.name  + '...');
         }
+      },
+
+      handleInstallResponse: function(e) {
+
       }
     });
   </script>

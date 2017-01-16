@@ -12,6 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="view-status">
@@ -24,7 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .card {
-        width: 700px;
+        width: 800px;
       }
 
       .toolbar {
@@ -40,6 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       .tableRow {
         display: table-row;
+        font-size: 15px;
       }
 
       .tableHeading {
@@ -55,10 +57,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         border: 1px solid darkgray;
         padding: 5px;
       }
+
+      .table paper-button {
+        background-color: white;
+        color: black;
+      }
     </style>
 
     <iron-ajax id="componentsRequest"
-               url="/admin-api/components/"
+               url="components.json?/admin-api/components/"
                auto
                handle-as="json"
                content-type="application/json"
@@ -72,6 +79,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                content-type="application/json"
                method="GET"
                last-response="{{containersResponse}}"></iron-ajax>
+
+    <iron-ajax id="uninstallRequest"
+               url="/admin-api/components/"
+               handle-as="json"
+               content-type="application/json"
+               method="DELETE"
+               on-response="handleUninstallResponse"></iron-ajax>
 
     <div class="card">
       <h1>Status</h1>
@@ -93,6 +107,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <div class="tableHead"><strong>Created</strong></div>
           <div class="tableHead"><strong>Name</strong></div>
           <div class="tableHead"><strong>Status</strong></div>
+          <div class="tableHead"><strong>Actions</strong></div>
         </div>
 
         <template is="dom-repeat" items="{{componentsResponse}}" as="component">
@@ -101,6 +116,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="tableCell">{{component.created}}</div>
             <div class="tableCell">{{component.name}}</div>
             <div class="tableCell">{{component.status}}</div>
+            <div class="tableCell">
+              <paper-button on-tap="_handleComponentUninstallTap" raised>
+                <iron-icon icon="remove-circle"></iron-icon>
+                Uninstall
+              </paper-button></div>
           </div>
         </template>
       </div>
@@ -134,11 +154,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
 
     </div>
+
+    <paper-dialog id="uninstallDialog" on-iron-overlay-closed="_handleUninstallDialogClosed">
+      <h2>Uninstall Component</h2>
+      <p>Do you really want to uninstall [[_uninstallComponent.name]]?</p>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus>Uninstall</paper-button>
+      </div>
+    </paper-dialog>
   </template>
 
   <script>
     Polymer({
       is: 'view-status',
+
+      properties: {
+        _uninstallComponent: {
+          type: Object
+        }
+      },
 
       _handleComponentsRefreshTap: function() {
         this.$.componentsRequest.generateRequest();
@@ -146,6 +181,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _handleContainersRefreshTap: function() {
         this.$.containersRequest.generateRequest();
+      },
+
+      _handleComponentUninstallTap: function(e) {
+        this._uninstallComponent = e.model.component;
+        this.$.uninstallDialog.open();
+      },
+
+      _handleUninstallDialogClosed: function(e) {
+        if (e.detail.confirmed) {
+          var request = this.$.uninstallRequest;
+
+          request.url += this._uninstallComponent.name;
+
+          request.generateRequest();
+        }
+      },
+
+      handleUninstallResponse: function(e) {
+
       }
 
     });
