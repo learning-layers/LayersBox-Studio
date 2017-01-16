@@ -54,41 +54,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <h1>Component Store</h1>
       <p>Here you see all the components that you can install within your Layers Box.</p>
 
-      <paper-card heading="OpenID Connect" image="http://placehold.it/300x150/FFC107/000000?text=OpenID%20Connect" alt="OpenID Connect">
-        <div class="card-content">
-          OpenID Connect allows you to authenticate and authorize users.
-        </div>
-        <div class="card-actions">
-          <a href="https://github.com/learning-layers/openidconnect-Dockerfiles" target="_blank" tabindex="-1">
-            <paper-button>Visit Homepage</paper-button>
-          </a>
-          <paper-button on-tap="_handleInstall">Install</paper-button>
-        </div>
-      </paper-card>
+      <template is="dom-repeat" items="[[components]]" as="component">
 
-      <paper-card heading="Social Semantic Server" image="http://placehold.it/300x150/66ff66/000000?text=Social%20Semantic%20Server" alt="Social Semantic Server">
-        <div class="card-content">
-          Towards A Framework for Social Semantic Network Data.
-        </div>
-        <div class="card-actions">
-          <a href="https://github.com/learning-layers/SocialSemanticServer" target="_blank" tabindex="-1">
-            <paper-button>Visit Homepage</paper-button>
-          </a>
-          <paper-button on-tap="_handleInstall">Install</paper-button>
-        </div>
-      </paper-card>
+        <paper-card heading="[[component.name]]" image="[[component.image]]" alt="[[component.name]]">
+          <div class="card-content">
+            [[component.description]]
+          </div>
+          <div class="card-actions">
+            <a href="[[component.homepage]]" target="_blank" tabindex="-1">
+              <paper-button>Visit Homepage</paper-button>
+            </a>
+            <paper-button on-tap="_handleInstall">Install</paper-button>
+          </div>
+        </paper-card>
 
-      <paper-card heading="MobSOS" image="http://placehold.it/300x150/66ccff/000000?text=MobSOS" alt="MobSOS">
-        <div class="card-content">
-          MobSOS is a one-stop shop for all your analytics needs.
-        </div>
-        <div class="card-actions">
-          <a href="https://github.com/rwth-acis/mobsos" target="_blank" tabindex="-1">
-            <paper-button>Visit Homepage</paper-button>
-          </a>
-          <paper-button on-tap="_handleInstall">Install</paper-button>
-        </div>
-      </paper-card>
+      </template>
 
     </div>
 
@@ -106,8 +86,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'view-lapps',
 
+      properties: {
+        components: {
+          type: Array,
+          value: function() { return this._getComponents(); }
+        }
+      },
+
       _handleInstall: function() {
         this.$.installDialog.open();
+      },
+
+      _getComponents: function() {
+        return [{name: 'OpenID Connect',
+            description: 'OpenID Connect allows you to authenticate and authorize users.',
+            image: 'http://placehold.it/300x150/FFC107/000000?text=OpenID%20Connect',
+            homepage: 'https://github.com/learning-layers/openidconnect-Dockerfiles',
+            package: 'learning-layers/openidconnect-Dockerfiles'},
+          {name: 'Social Semantic Server',
+            description: 'Towards A Framework for Social Semantic Network Data.',
+            image: 'http://placehold.it/300x150/66ff66/000000?text=Social%20Semantic%20Server',
+            homepage: 'https://github.com/learning-layers/SocialSemanticServer',
+            package: 'learning-layers/socialsemanticserver-Dockerfiles'}]
       }
     });
   </script>

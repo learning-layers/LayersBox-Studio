@@ -80,7 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-location route="{{route}}"></app-location>
     <app-route
         route="{{route}}"
-        pattern="/admin/:page"
+        pattern="[[_frontendBasePath]]:page"
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
@@ -146,6 +146,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'layersbox-studio',
 
       properties: {
+        _frontendBasePath: {
+          type: String,
+          value: '/'
+        },
         page: {
           type: String,
           reflectToAttribute: true,
