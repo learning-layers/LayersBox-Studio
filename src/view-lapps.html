@@ -58,6 +58,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
 
+    <iron-ajax id="lappsRequest"
+               url="lapps.json"
+               auto
+               handle-as="json"
+               content-type="application/json"
+               method="GET"
+               last-response="{{componentsResponse}}"></iron-ajax>
+
     <iron-ajax id="installRequest"
                url="/admin-api/components/"
                handle-as="json"
@@ -76,7 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </template>
       </iron-collapse>
 
-      <template is="dom-repeat" items="[[components]]" as="component">
+      <template is="dom-repeat" items="[[componentsResponse]]" as="component">
 
         <paper-card heading="[[component.name]]" image="[[component.image]]" alt="[[component.name]]">
           <div class="card-content">
@@ -109,10 +117,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'view-lapps',
 
       properties: {
-        components: {
-          type: Array,
-          value: function() { return this._getComponents(); }
-        },
         _installComponent: {
           type: Object
         },
@@ -125,24 +129,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _handleInstall: function(e) {
         this._installComponent = e.model.component;
         this.$.installDialog.open();
-      },
-
-      _getComponents: function() {
-        return [{name: 'Federation Core',
-            description: 'This component represents the core of the Layers Box federation.',
-            image: 'http://placehold.it/300x150/FFC107/000000?text=Federation Core',
-            homepage: 'https://github.com/learning-layers/fed-Dockerfiles',
-            packageId: 'learning-layers/fed'},
-          {name: 'Federation Local',
-            description: 'This component represents the local part of the Layers Box federation.',
-            image: 'http://placehold.it/300x150/B36B00/000000?text=Federation Local',
-            homepage: 'https://github.com/learning-layers/fedlocal-Dockerfiles',
-            packageId: 'learning-layers/fedlocal'},
-          {name: 'Social Semantic Server',
-            description: 'Towards A Framework for Social Semantic Network Data.',
-            image: 'http://placehold.it/300x150/66ff66/000000?text=Social%20Semantic%20Server',
-            homepage: 'https://github.com/learning-layers/SocialSemanticServer',
-            packageId: 'learning-layers/socialsemanticserver#v11.9.6-alpha'}]
       },
 
       _handleInstallDialogClosed: function(e) {
