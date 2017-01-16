@@ -67,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <div class="card">
       <h1>Component Store</h1>
-      <p>Here you see all the components that you can install within your Layers Box.</p>
+      <p>Here you see all the components that you can install on your Layers Box.</p>
 
       <iron-collapse id="logPanel">
         <template is="dom-repeat" items="[[_log]]">
@@ -127,16 +127,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _getComponents: function() {
-        return [{name: 'OpenID Connect',
-            description: 'OpenID Connect allows you to authenticate and authorize users.',
-            image: 'http://placehold.it/300x150/FFC107/000000?text=OpenID%20Connect',
-            homepage: 'https://github.com/learning-layers/openidconnect-Dockerfiles',
-            packageId: 'learning-layers/openidconnect-Dockerfiles'},
+        return [{name: 'Federation Core',
+            description: 'This component represents the core of the Layers Box federation.',
+            image: 'http://placehold.it/300x150/FFC107/000000?text=Federation Core',
+            homepage: 'https://github.com/learning-layers/fed',
+            packageId: 'learning-layers/fed-Dockerfiles'},
+          {name: 'Federation Local',
+            description: 'This component represents the local part of the Layers Box federation.',
+            image: 'http://placehold.it/300x150/B36B00/000000?text=Federation Local',
+            homepage: 'https://github.com/learning-layers/fedlocal',
+            packageId: 'learning-layers/fedlocal-Dockerfiles'},
           {name: 'Social Semantic Server',
             description: 'Towards A Framework for Social Semantic Network Data.',
             image: 'http://placehold.it/300x150/66ff66/000000?text=Social%20Semantic%20Server',
             homepage: 'https://github.com/learning-layers/SocialSemanticServer',
-            packageId: 'learning-layers/socialsemanticserver-Dockerfiles'}]
+            packageId: 'learning-layers/socialsemanticserver#v11.9.6-alpha'}]
       },
 
       _handleInstallDialogClosed: function(e) {
