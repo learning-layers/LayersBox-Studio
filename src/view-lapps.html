@@ -134,7 +134,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _handleInstallDialogClosed: function(e) {
         if (e.detail.confirmed) {
           var request = this.$.installRequest;
-          request.body = 'component=' + this._installComponent.packageId;
+          request.body = this._installComponent.packageId;
 
           request.generateRequest();
           this.$.logPanel.show();
