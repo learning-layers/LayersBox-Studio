@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-collapse/iron-collapse.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
@@ -48,11 +50,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         color: inherit;
         text-decoration: none;
       }
+
+      #logPanel {
+        border: 1px solid black;
+        padding: 10px;
+        font-family: monospace;
+      }
     </style>
+
+    <iron-ajax id="installRequest"
+               url="/admin-api/components/"
+               handle-as="json"
+               content-type="application/json"
+               method="POST"
+               last-response="{{installResponse}}"></iron-ajax>
 
     <div class="card">
       <h1>Component Store</h1>
       <p>Here you see all the components that you can install within your Layers Box.</p>
+
+      <iron-collapse id="logPanel">
+        <template is="dom-repeat" items="[[_log]]">
+          <div>[[item]]</div>
+        </template>
+      </iron-collapse>
 
       <template is="dom-repeat" items="[[components]]" as="component">
 
@@ -72,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </div>
 
-    <paper-dialog id="installDialog">
+    <paper-dialog id="installDialog" on-iron-overlay-closed="_handleInstallDialogClosed">
       <h2>Install Component</h2>
       <p>Do you really want to install this component?</p>
       <div class="buttons">
@@ -90,10 +111,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         components: {
           type: Array,
           value: function() { return this._getComponents(); }
+        },
+        _installPackageId: {
+          type: String
+        },
+        _log: {
+          type: Array,
+          value: []
         }
       },
 
-      _handleInstall: function() {
+      _handleInstall: function(e) {
+        this._installComponent = e.model.component;
         this.$.installDialog.open();
       },
 
@@ -102,12 +131,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             description: 'OpenID Connect allows you to authenticate and authorize users.',
             image: 'http://placehold.it/300x150/FFC107/000000?text=OpenID%20Connect',
             homepage: 'https://github.com/learning-layers/openidconnect-Dockerfiles',
-            package: 'learning-layers/openidconnect-Dockerfiles'},
+            packageId: 'learning-layers/openidconnect-Dockerfiles'},
           {name: 'Social Semantic Server',
             description: 'Towards A Framework for Social Semantic Network Data.',
             image: 'http://placehold.it/300x150/66ff66/000000?text=Social%20Semantic%20Server',
             homepage: 'https://github.com/learning-layers/SocialSemanticServer',
-            package: 'learning-layers/socialsemanticserver-Dockerfiles'}]
+            packageId: 'learning-layers/socialsemanticserver-Dockerfiles'}]
+      },
+
+      _handleInstallDialogClosed: function(e) {
+        if (e.detail.confirmed) {
+          var request = this.$.installRequest;
+          request.body = this._installComponent.packageId;
+
+          request.generateRequest();
+          this.$.logPanel.show();
+          this.push('_log', 'Installing ' + this._installComponent.name  + '...');
+        }
       }
     });
   </script>
